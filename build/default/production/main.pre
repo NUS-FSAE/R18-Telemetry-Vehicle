@@ -17938,15 +17938,6 @@ typedef uint16_t uintptr_t;
 # 12 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\stdbool.h"
 typedef unsigned char bool;
 
-# 94 "mcc_generated_files/eusart2.h"
-void EUSART2_Initialize(void);
-
-# 114
-uint8_t EUSART2_Read(void);
-
-# 134
-void EUSART2_Write(uint8_t txData);
-
 # 67 "mcc_generated_files/ecan.h"
 typedef union {
 
@@ -17990,6 +17981,15 @@ unsigned char CAN_isRXErrorPassive(void);
 # 278
 unsigned char CAN_isTXErrorPassive(void);
 
+# 94 "mcc_generated_files/eusart2.h"
+void EUSART2_Initialize(void);
+
+# 114
+uint8_t EUSART2_Read(void);
+
+# 134
+void EUSART2_Write(uint8_t txData);
+
 # 69 "mcc_generated_files/mcc.h"
 void SYSTEM_Initialize(void);
 
@@ -18005,15 +18005,10 @@ uCAN_MSG canMessage;
 
 SYSTEM_Initialize();
 
-PORTCbits.RC6 = 0;
-LATC6 = 0;
-TRISC6 = 0;
-
 
 CIOCONbits.CLKSEL = 1;
 CIOCONbits.ENDRHI = 1;
-CIOCONbits.TX2SRC = 0;
-CIOCONbits.TX2EN = 0;
+
 RXB0CONbits.RXM0 = 1;
 RXB0CONbits.RXM1 = 0;
 RXB0CONbits.RB0DBEN = 0;
@@ -18022,34 +18017,8 @@ RXB0CONbits.FILHIT0 = 0;
 EUSART2_Initialize();
 
 while (1) {
-canMessage.frame.data0 = 0x05;
-canMessage.frame.data1 = 0x05;
-canMessage.frame.data2 = 0x05;
-canMessage.frame.data3 = 0x05;
-canMessage.frame.data4 = 0x05;
-canMessage.frame.data5 = 0x05;
-canMessage.frame.data6 = 0x05;
-canMessage.frame.data7 = 0x05;
-canMessage.frame.id = 0x643;
-canMessage.frame.dlc = 8;
-canMessage.frame.idType = 1;
-CAN_transmit(&canMessage);
 
-
-do { LATCbits.LATC2 = 1; } while(0);
-_delay((unsigned long)((1000)*(16000000/4000.0)));
-do { LATCbits.LATC2 = 0; } while(0);
-_delay((unsigned long)((100)*(16000000/4000.0)));
-if (CAN_receive(&canMessage)) {
-do { LATCbits.LATC2 = 1; } while(0);
-if (canMessage.frame.id == 0x640) {
-sendPacket(1, &(canMessage.frame.data0));
-} else if (canMessage.frame.id == 0x641) {
-sendPacket(2, &(canMessage.frame.data0));
-} else if (canMessage.frame.id == 0x642) {
-sendPacket(3, &(canMessage.frame.data0));
-}
-}
+# 101
 }
 }
 

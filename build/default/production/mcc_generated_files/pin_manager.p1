@@ -13634,9 +13634,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pin_manager.c: 60: LATB = 0x03;
 "60
 [e = _LATB -> -> 3 `i `uc ]
-[; ;pin_manager.c: 61: LATC = 0x00;
+[; ;pin_manager.c: 61: LATC = 0xC0;
 "61
-[e = _LATC -> -> 0 `i `uc ]
+[e = _LATC -> -> 192 `i `uc ]
 [; ;pin_manager.c: 66: TRISE = 0x07;
 "66
 [e = _TRISE -> -> 7 `i `uc ]

@@ -24,7 +24,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "52
 [p x XINST=OFF ]
 "55
-[p x FOSC=HS2 ]
+[p x FOSC=INTIO2 ]
 "56
 [p x PLLCFG=OFF ]
 "57
@@ -13700,9 +13700,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdint.h: 222: typedef int16_t intptr_t;
 [; ;stdint.h: 227: typedef uint16_t uintptr_t;
 [; ;stdbool.h: 12: typedef unsigned char bool;
-[; ;eusart2.h: 94: void EUSART2_Initialize(void);
-[; ;eusart2.h: 114: uint8_t EUSART2_Read(void);
-[; ;eusart2.h: 134: void EUSART2_Write(uint8_t txData);
 [; ;ecan.h: 67: typedef union {
 [; ;ecan.h: 69: struct {
 [; ;ecan.h: 70: unsigned char idType;
@@ -13727,6 +13724,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ecan.h: 230: unsigned char CAN_isBusOff(void);
 [; ;ecan.h: 254: unsigned char CAN_isRXErrorPassive(void);
 [; ;ecan.h: 278: unsigned char CAN_isTXErrorPassive(void);
+[; ;eusart2.h: 94: void EUSART2_Initialize(void);
+[; ;eusart2.h: 114: uint8_t EUSART2_Read(void);
+[; ;eusart2.h: 134: void EUSART2_Write(uint8_t txData);
 [; ;mcc.h: 69: void SYSTEM_Initialize(void);
 [; ;mcc.h: 82: void OSCILLATOR_Initialize(void);
 "111 mcc_generated_files/mcc.c

@@ -147,7 +147,6 @@ CAN ID		Mask		Filter		Buffer
     BRGCON3 = 0x01;   
     
     CANCON = 0x00;
-    
     while (0x00 != (CANSTAT & 0xE0)); // wait until ECAN is in Normal mode
     
 
