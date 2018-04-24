@@ -52,8 +52,8 @@
 #pragma config XINST = OFF    // Extended Instruction Set->Disabled
 
 // CONFIG1H
-#pragma config FOSC = INTIO2    // Oscillator->Internal RC oscillator
-#pragma config PLLCFG = OFF    // PLL x4 Enable bit->Disabled
+#pragma config FOSC = HS2    // Oscillator->HS oscillator (High power, 16 MHz - 25 MHz)
+#pragma config PLLCFG = ON    // PLL x4 Enable bit->Enabled
 #pragma config FCMEN = OFF    // Fail-Safe Clock Monitor->Disabled
 #pragma config IESO = OFF    // Internal External Oscillator Switch Over Mode->Disabled
 
@@ -68,7 +68,7 @@
 #pragma config WDTPS = 1048576    // Watchdog Postscaler->1:1048576
 
 // CONFIG3H
-#pragma config CANMX = PORTC    // ECAN Mux bit->ECAN TX and RX pins are located on RC6 and RC7, respectively
+#pragma config CANMX = PORTB    // ECAN Mux bit->ECAN TX and RX pins are located on RB2 and RB3, respectively
 #pragma config MSSPMSK = MSK7    // MSSP address masking->7 Bit address masking mode
 #pragma config MCLRE = ON    // Master Clear Enable->MCLR Enabled, RE3 Disabled
 
@@ -111,8 +111,11 @@
 void SYSTEM_Initialize(void)
 {
 
+    INTERRUPT_Initialize();
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
+    TMR1_Initialize();
+    TMR0_Initialize();
     EUSART2_Initialize();
     ECAN_Initialize();
 }

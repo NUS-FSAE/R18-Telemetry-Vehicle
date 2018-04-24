@@ -17820,15 +17820,119 @@ extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 
 extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
 
-# 26 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\htc.h"
-extern const char __xc8_OPTIM_SPEED;
+# 4 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\__size_t.h"
+typedef unsigned size_t;
 
-extern double __fpnormalize(double);
+# 7 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\stdlib.h"
+typedef unsigned short wchar_t;
+
+# 15
+typedef struct {
+int rem;
+int quot;
+} div_t;
+typedef struct {
+unsigned rem;
+unsigned quot;
+} udiv_t;
+typedef struct {
+long quot;
+long rem;
+} ldiv_t;
+typedef struct {
+unsigned long quot;
+unsigned long rem;
+} uldiv_t;
+
+# 53
+extern double atof(const char *);
+extern double strtod(const char *, const char **);
+extern int atoi(const char *);
+extern unsigned xtoi(const char *);
+extern long atol(const char *);
+extern long strtol(const char *, char **, int);
+
+extern int rand(void);
+extern void srand(unsigned int);
+extern void * calloc(size_t, size_t);
+extern div_t div(int numer, int denom);
+extern udiv_t udiv(unsigned numer, unsigned denom);
+extern ldiv_t ldiv(long numer, long denom);
+extern uldiv_t uldiv(unsigned long numer,unsigned long denom);
+extern unsigned long _lrotl(unsigned long value, unsigned int shift);
+extern unsigned long _lrotr(unsigned long value, unsigned int shift);
+extern unsigned int _rotl(unsigned int value, unsigned int shift);
+extern unsigned int _rotr(unsigned int value, unsigned int shift);
+
+
+
+
+extern void * malloc(size_t);
+extern void free(void *);
+extern void * realloc(void *, size_t);
 
 
 # 13 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\xc8debug.h"
 #pragma intrinsic(__builtin_software_breakpoint)
 extern void __builtin_software_breakpoint(void);
+
+# 86 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\stdlib.h"
+extern int atexit(void (*)(void));
+extern char * getenv(const char *);
+extern char ** environ;
+extern int system(char *);
+extern void qsort(void *, size_t, size_t, int (*)(const void *, const void *));
+extern void * bsearch(const void *, void *, size_t, size_t, int(*)(const void *, const void *));
+extern int abs(int);
+extern long labs(long);
+
+extern char * itoa(char * buf, int val, int base);
+extern char * utoa(char * buf, unsigned val, int base);
+
+
+
+
+extern char * ltoa(char * buf, long val, int base);
+extern char * ultoa(char * buf, unsigned long val, int base);
+
+extern char * ftoa(float f, int * status);
+
+# 14 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\string.h"
+extern void * memcpy(void *, const void *, size_t);
+extern void * memmove(void *, const void *, size_t);
+extern void * memset(void *, int, size_t);
+
+# 36
+extern char * strcat(char *, const char *);
+extern char * strcpy(char *, const char *);
+extern char * strncat(char *, const char *, size_t);
+extern char * strncpy(char *, const char *, size_t);
+extern char * strdup(const char *);
+extern char * strtok(char *, const char *);
+
+
+extern int memcmp(const void *, const void *, size_t);
+extern int strcmp(const char *, const char *);
+extern int stricmp(const char *, const char *);
+extern int strncmp(const char *, const char *, size_t);
+extern int strnicmp(const char *, const char *, size_t);
+extern void * memchr(const void *, int, size_t);
+extern size_t strcspn(const char *, const char *);
+extern char * strpbrk(const char *, const char *);
+extern size_t strspn(const char *, const char *);
+extern char * strstr(const char *, const char *);
+extern char * stristr(const char *, const char *);
+extern char * strerror(int);
+extern size_t strlen(const char *);
+extern char * strchr(const char *, int);
+extern char * strichr(const char *, int);
+extern char * strrchr(const char *, int);
+extern char * strrichr(const char *, int);
+
+# 26 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\htc.h"
+extern const char __xc8_OPTIM_SPEED;
+
+extern double __fpnormalize(double);
 
 # 18 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic18.h"
 __attribute__((__unsupported__("The " "flash_write" " routine is no longer supported. Please use the MPLAB X MCC."))) void flash_write(const unsigned char *, unsigned int, __far unsigned char *);
@@ -17857,10 +17961,10 @@ extern __nonreentrant void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __nonreentrant void _delay3(unsigned char);
 
-# 149 "mcc_generated_files/pin_manager.h"
+# 153 "mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
 
-# 161
+# 165
 void PIN_MANAGER_IOC(void);
 
 # 13 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\stdint.h"
@@ -17938,6 +18042,51 @@ typedef uint16_t uintptr_t;
 # 12 "C:\Program Files (x86)\Microchip\xc8\v1.42\include\stdbool.h"
 typedef unsigned char bool;
 
+# 110 "mcc_generated_files/interrupt_manager.h"
+void interrupt INTERRUPT_InterruptManager(void);
+
+# 122
+void INTERRUPT_Initialize (void);
+
+# 100 "mcc_generated_files/tmr1.h"
+void TMR1_Initialize(void);
+
+# 129
+void TMR1_StartTimer(void);
+
+# 161
+void TMR1_StopTimer(void);
+
+# 196
+uint16_t TMR1_ReadTimer(void);
+
+# 235
+void TMR1_WriteTimer(uint16_t timerVal);
+
+# 271
+void TMR1_Reload(void);
+
+# 310
+void TMR1_StartSinglePulseAcquisition(void);
+
+# 349
+uint8_t TMR1_CheckGateValueStatus(void);
+
+# 367
+void TMR1_ISR(void);
+
+# 384
+void TMR1_CallBack(void);
+
+# 402
+void TMR1_SetInterruptHandler(void (* InterruptHandler)(void));
+
+# 420
+extern void (*TMR1_InterruptHandler)(void);
+
+# 438
+void TMR1_DefaultInterruptHandler(void);
+
 # 67 "mcc_generated_files/ecan.h"
 typedef union {
 
@@ -17981,6 +18130,36 @@ unsigned char CAN_isRXErrorPassive(void);
 # 278
 unsigned char CAN_isTXErrorPassive(void);
 
+# 99 "mcc_generated_files/tmr0.h"
+void TMR0_Initialize(void);
+
+# 128
+void TMR0_StartTimer(void);
+
+# 160
+void TMR0_StopTimer(void);
+
+# 196
+uint16_t TMR0_ReadTimer(void);
+
+# 235
+void TMR0_WriteTimer(uint16_t timerVal);
+
+# 271
+void TMR0_Reload(void);
+
+# 289
+void TMR0_ISR(void);
+
+# 308
+void TMR0_SetInterruptHandler(void (* InterruptHandler)(void));
+
+# 326
+extern void (*TMR0_InterruptHandler)(void);
+
+# 344
+void TMR0_DefaultInterruptHandler(void);
+
 # 94 "mcc_generated_files/eusart2.h"
 void EUSART2_Initialize(void);
 
@@ -17990,18 +18169,37 @@ uint8_t EUSART2_Read(void);
 # 134
 void EUSART2_Write(uint8_t txData);
 
-# 69 "mcc_generated_files/mcc.h"
+# 72 "mcc_generated_files/mcc.h"
 void SYSTEM_Initialize(void);
 
-# 82
+# 85
 void OSCILLATOR_Initialize(void);
 
-# 53 "main.c"
-void sendPacket(uint8_t id, uint8_t* data);
-
-void main(void)
-{
+# 10 "main.c"
 uCAN_MSG canMessage;
+bool send = 0;
+int data = 0;
+uint8_t data1[9],data2[9],data3[9],data4[9],data5[9];
+
+void sendPacket_id(uint8_t id);
+void sendPacket(uint8_t* bytes);
+
+void updateData() {
+(INTCONbits.GIE = 0);
+(INTCONbits.PEIE = 0);
+data = (data+1)%127;
+(INTCONbits.GIE = 1);
+(INTCONbits.PEIE = 1);
+}
+
+void time_to_send() {
+TMR1_StopTimer();
+(INTCONbits.GIE = 0);
+(INTCONbits.PEIE = 0);
+send = 1;
+}
+
+void main(void) {
 
 SYSTEM_Initialize();
 
@@ -18016,18 +18214,71 @@ RXB0CONbits.FILHIT0 = 0;
 
 EUSART2_Initialize();
 
+
+TMR1_SetInterruptHandler(&time_to_send);
+
+(INTCONbits.GIE = 1);
+(INTCONbits.PEIE = 1);
+
 while (1) {
-
-# 101
+if (CAN_receive(&canMessage)) {
+do { LATCbits.LATC2 = 1; } while(0);
+uint8_t id = canMessage.frame.id;
+switch(id) {
+case 0x40:
+data1[0] = id;
+memcpy(data1+1,&(canMessage.array[6]),8);
+break;
+case 0x41:
+data2[0] = id;
+memcpy(data2+1,&(canMessage.array[6]),8);
+break;
+case 0x42:
+data3[0] = id;
+memcpy(data3+1,&(canMessage.array[6]),8);
+break;
+case 0x43:
+data4[0] = id;
+memcpy(data4+1,&(canMessage.array[6]),8);
+break;
+case 0x44:
+data5[0] = id;
+memcpy(data5+1,&(canMessage.array[6]),8);
+break;
 }
 }
 
-void sendPacket(uint8_t id, uint8_t* data) {
-EUSART2_Write(0x7C);
+if(send) {
+(INTCONbits.GIE = 0);
+(INTCONbits.PEIE = 0);
+sendPacket(data1);
+sendPacket(data2);
+sendPacket(data3);
+sendPacket(data4);
+sendPacket(data5);
+send = 0;
+TMR1_StartTimer();
+(INTCONbits.GIE = 1);
+(INTCONbits.PEIE = 1);
+}
+}
+}
+
+void sendPacket(uint8_t* bytes) {
+EUSART2_Write(0xFE);
+for (int i = 0; i < 9; ++i) {
+EUSART2_Write(*(bytes+i));
+}
+EUSART2_Write(0X7E);
+}
+
+void sendPacket_id(uint8_t id) {
+do { LATCbits.LATC2 = 1; } while(0);
+EUSART2_Write(0xFE);
 EUSART2_Write(id);
 for(int i=0; i<8; ++i) {
-EUSART2_Write(*(data+i));
+EUSART2_Write(data);
 }
-EUSART2_Write(0x7E);
+EUSART2_Write(0X7E);
 }
 

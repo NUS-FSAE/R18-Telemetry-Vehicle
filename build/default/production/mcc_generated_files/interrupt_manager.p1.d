@@ -1,6 +1,6 @@
- build/default/production/main.d  \
- build/default/production/main.p1:  \
- main.c  \
+ build/default/production/mcc_generated_files/interrupt_manager.d  \
+ build/default/production/mcc_generated_files/interrupt_manager.p1:  \
+ mcc_generated_files/interrupt_manager.c  \
 mcc_generated_files/mcc.h  \
 mcc_generated_files/eusart2.h  \
 mcc_generated_files/interrupt_manager.h  \

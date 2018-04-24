@@ -135,14 +135,14 @@ CAN ID		Mask		Filter		Buffer
 
 	/**
 	Baud rate: 1Mbps
-	System frequency: 16000000 Hz
+	System frequency: 64000000 Hz
 	Time quanta: 8
 	Sample point: 1-1-4-2
 	Sample point: 75.00%
 	*/
 
     
-    BRGCON1 = 0x00; 
+    BRGCON1 = 0x03; 
     BRGCON2 = 0x98;
     BRGCON3 = 0x01;   
     

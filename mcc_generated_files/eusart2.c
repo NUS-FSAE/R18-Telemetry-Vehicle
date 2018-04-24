@@ -66,7 +66,7 @@ void EUSART2_Initialize(void)
     TXSTA2 = 0x26;
 
     // Baud Rate = 115200; 
-    SPBRG2 = 0x22;
+    SPBRG2 = 0x8A;
 
     // Baud Rate = 115200; 
     SPBRGH2 = 0x00;

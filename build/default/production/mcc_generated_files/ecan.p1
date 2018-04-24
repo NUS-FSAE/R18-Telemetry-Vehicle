@@ -14091,9 +14091,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;ecan.c: 130: RXF5SIDL = 0x00;
 "130
 [e = _RXF5SIDL -> -> 0 `i `uc ]
-[; ;ecan.c: 145: BRGCON1 = 0x00;
+[; ;ecan.c: 145: BRGCON1 = 0x03;
 "145
-[e = _BRGCON1 -> -> 0 `i `uc ]
+[e = _BRGCON1 -> -> 3 `i `uc ]
 [; ;ecan.c: 146: BRGCON2 = 0x98;
 "146
 [e = _BRGCON2 -> -> 152 `i `uc ]

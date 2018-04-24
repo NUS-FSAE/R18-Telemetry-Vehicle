@@ -1,60 +1,36 @@
-/**
-  Generated Main Source File
-
-  Company:
-    Microchip Technology Inc.
-
-  File Name:
-    main.c
-
-  Summary:
-    This is the main file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs 
-
-  Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
-    Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs  - 1.45
-        Device            :  PIC18F46K80
-        Driver Version    :  2.00
-    The generated drivers are tested against the following:
-        Compiler          :  XC8 1.35
-        MPLAB             :  MPLAB X 3.40
-*/
-
-/*
-    (c) 2016 Microchip Technology Inc. and its subsidiaries. You may use this
-    software and any derivatives exclusively with Microchip products.
-
-    THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-    EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-    WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-    PARTICULAR PURPOSE, OR ITS INTERACTION WITH MICROCHIP PRODUCTS, COMBINATION
-    WITH ANY OTHER PRODUCTS, OR USE IN ANY APPLICATION.
-
-    IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-    WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-    BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-    FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-    ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-    THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-
-    MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
-    TERMS.
-*/
-
 #include <pic18f45k80.h>
-
+#include <stdlib.h>
+#include <string.h>
 #include "mcc_generated_files/mcc.h"
 
-/*
-                         Main application
- */
-void sendPacket(uint8_t id, uint8_t* data);
+#define SOF_BYTE0 0xFE
+#define SOF_BYTE1 0xFF
+#define EOF_BYTE0 0X7E
 
-void main(void)
-{
-    uCAN_MSG canMessage;
+uCAN_MSG canMessage;
+bool send = false;
+int data = 0;
+uint8_t data1[9],data2[9],data3[9],data4[9],data5[9];
+
+void sendPacket_id(uint8_t id);
+void sendPacket(uint8_t* bytes);
+
+void updateData() {
+    INTERRUPT_GlobalInterruptDisable();
+    INTERRUPT_PeripheralInterruptDisable();
+    data = (data+1)%127;
+    INTERRUPT_GlobalInterruptEnable();
+    INTERRUPT_PeripheralInterruptEnable();
+}
+
+void time_to_send() {
+    TMR1_StopTimer();
+    INTERRUPT_GlobalInterruptDisable();
+    INTERRUPT_PeripheralInterruptDisable();
+    send = true;
+}
+
+void main(void) {
     // Initialize the device
     SYSTEM_Initialize();
     
@@ -68,46 +44,73 @@ void main(void)
     RXB0CONbits.FILHIT0 = 0;
 
     EUSART2_Initialize();
+    
+//    TMR0_SetInterruptHandler(&updateData);
+    TMR1_SetInterruptHandler(&time_to_send);
+
+    INTERRUPT_GlobalInterruptEnable();
+    INTERRUPT_PeripheralInterruptEnable();
 
     while (1) {
-//        canMessage.frame.data0 = 0x08;
-//        canMessage.frame.data1 = 0x09;
-//        canMessage.frame.data2 = 0x15;
-//        canMessage.frame.data3 = 0xAE;
-//        canMessage.frame.data4 = 0x05;
-//        canMessage.frame.data5 = 0x0F;
-//        canMessage.frame.data6 = 0x05;
-//        canMessage.frame.data7 = 0x05;
-//        canMessage.frame.id = 0x634;
-//        canMessage.frame.dlc = 8;
-//        canMessage.frame.idType = dSTANDARD_CAN_MSG_ID_2_0B;
-//        CAN_transmit(&canMessage);
+        if (CAN_receive(&canMessage)) {
+            LED_SetHigh();
+            uint8_t id = canMessage.frame.id;
+            switch(id) {
+                case 0x40:
+                    data1[0] = id;
+                    memcpy(data1+1,&(canMessage.array[6]),8);
+                    break;
+                case 0x41:
+                    data2[0] = id;
+                    memcpy(data2+1,&(canMessage.array[6]),8);
+                    break;
+                case 0x42:
+                    data3[0] = id;
+                    memcpy(data3+1,&(canMessage.array[6]),8);
+                    break;
+                case 0x43:
+                    data4[0] = id;
+                    memcpy(data4+1,&(canMessage.array[6]),8);
+                    break;
+                case 0x44:
+                    data5[0] = id;
+                    memcpy(data5+1,&(canMessage.array[6]),8);
+                    break;
+            }
+        }
         
-        
-//        LED_SetHigh();
-//        __delay_ms(1000);
-//        LED_SetLow();
-//        __delay_ms(100);
-//        if (CAN_receive(&canMessage)) {
-//            LED_SetHigh();
-//            if (canMessage.frame.id == 0x640) {
-//                sendPacket(1, &(canMessage.frame.data0));
-//            } else if (canMessage.frame.id == 0x641) {
-//                sendPacket(2, &(canMessage.frame.data0));
-//            } else if (canMessage.frame.id == 0x642) {
-//                sendPacket(3, &(canMessage.frame.data0));
-//            }
-//        }
+        if(send) {
+            INTERRUPT_GlobalInterruptDisable();
+            INTERRUPT_PeripheralInterruptDisable();
+            sendPacket(data1);
+            sendPacket(data2);
+            sendPacket(data3);
+            sendPacket(data4);
+            sendPacket(data5);
+            send = false;
+            TMR1_StartTimer();
+            INTERRUPT_GlobalInterruptEnable();
+            INTERRUPT_PeripheralInterruptEnable();
+        }
     }
 }
 
-void sendPacket(uint8_t id, uint8_t* data) {
-    EUSART2_Write(0x7C);
+void sendPacket(uint8_t* bytes) {
+    EUSART2_Write(SOF_BYTE0); //start of frame byte
+    for (int i = 0; i < 9; ++i) {
+        EUSART2_Write(*(bytes+i));
+    }
+    EUSART2_Write(EOF_BYTE0); // end of Frame
+}
+
+void sendPacket_id(uint8_t id) {
+    LED_SetHigh();
+    EUSART2_Write(SOF_BYTE0);  //start of frame byte1
     EUSART2_Write(id);
     for(int i=0; i<8; ++i) {
-        EUSART2_Write(*(data+i));
+        EUSART2_Write(data);
     }
-    EUSART2_Write(0x7E);
+    EUSART2_Write(EOF_BYTE0); // end of Frame
 }
 /**
  End of File

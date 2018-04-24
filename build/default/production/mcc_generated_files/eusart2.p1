@@ -13670,9 +13670,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;eusart2.c: 66: TXSTA2 = 0x26;
 "66
 [e = _TXSTA2 -> -> 38 `i `uc ]
-[; ;eusart2.c: 69: SPBRG2 = 0x22;
+[; ;eusart2.c: 69: SPBRG2 = 0x8A;
 "69
-[e = _SPBRG2 -> -> 34 `i `uc ]
+[e = _SPBRG2 -> -> 138 `i `uc ]
 [; ;eusart2.c: 72: SPBRGH2 = 0x00;
 "72
 [e = _SPBRGH2 -> -> 0 `i `uc ]
